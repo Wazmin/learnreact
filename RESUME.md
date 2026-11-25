@@ -51,6 +51,64 @@ syntaxe qui se compile en appels à `createElement`.
 
 ---
 
+## 2026-11-25 — JSX, Virtual DOM et Composants
+
+**Prochaine étape : https://handsonreact.com/docs/project-setup**
+
+### Ce qui a été fait / vu
+- Leçons suivies : **JSX** (`/docs/jsx`), **Virtual DOM** (`/docs/virtual-dom`),
+  **Components** (`/docs/components`).
+- Ajout de **Babel standalone** pour compiler le JSX directement dans le navigateur :
+  - `npm install --save-dev @babel/standalone` (v8.1.3, dans `devDependencies`).
+  - `index.html` charge `/node_modules/@babel/standalone/babel.min.js` avant `main.js`.
+  - Le script `main.js` est maintenant en `type="text/babel"` (au lieu de
+    `text/javascript`) pour que Babel le transforme.
+- `main.js` réécrit en JSX avec des composants (l'ancien code `createElement` a été retiré).
+
+### Concepts à retenir
+- **JSX** : syntaxe proche du HTML qui est compilée en `React.createElement(...)`.
+  On garde `className` au lieu de `class`. Un seul élément racine par `return`
+  (d'où le `<div>` qui enveloppe), et parenthèses autour d'un JSX multi-lignes.
+- **Virtual DOM** : React garde une représentation en mémoire de l'UI, compare
+  (*diff*) l'ancienne et la nouvelle version, puis ne met à jour que ce qui a changé
+  dans le vrai DOM.
+- **Composants** : fonctions (ou classes) qui retournent des éléments React.
+  - Le nom commence par une **majuscule** (`<App />`, `<HelloWorld />`), sinon React le
+    prend pour une balise HTML.
+  - **Composant fonction** : `function App() { return <div>...</div>; }`
+  - **Composant classe** : `class X extends React.Component` avec une méthode `render()`.
+  - Un composant est réutilisable : on peut l'utiliser plusieurs fois.
+- Montage : `ReactDOM.createRoot(document.getElementById('root')).render(<App />)`.
+
+### Code actuel (`main.js`)
+```jsx
+class HelloWorld extends React.Component {
+  render() {
+    return <div className="container">Hello Class Component</div>;
+  }
+}
+
+function App() {
+  return (
+    <div>
+      <HelloWorld />
+      <HelloWorld />
+      <HelloWorld />
+      <HelloWorld />
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+```
+
+### Points à retravailler / questions
+- La leçon **Project Setup** va probablement passer à un vrai outil de projet
+  (bundler / CLI) au lieu de Babel standalone dans le navigateur.
+
+---
+
 <!--
 Modèle pour la prochaine entrée (copier en bas du fichier) :
 
