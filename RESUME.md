@@ -109,6 +109,69 @@ root.render(<App />);
 
 ---
 
+## 2026-11-26 — Project Setup : vrai projet Vite + TypeScript (`projectpilot`)
+
+**Prochaine étape : https://handsonreact.com/docs/labs/ts/YourFirstComponent**
+
+### Ce qui a été fait / vu
+- Leçon **Project Setup** et début des **labs TypeScript** (`/docs/labs/ts/...`).
+- L'ancien code de la racine (`index.html`, `main.js`, `package.json`, `node_modules`
+  avec React UMD + Babel standalone) a été **supprimé** (commit « flush code for new lesson »).
+- Nouveau projet créé dans **`projectpilot/`** avec **Vite** (template React + TypeScript) :
+  - React **19**, TypeScript, Vite 8, `@vitejs/plugin-react`, `oxlint` pour le lint.
+  - Ajout de la librairie CSS **mini.css** (`npm install mini.css`), importée dans
+    `src/index.css` :
+    `@import '../node_modules/mini.css/dist/mini-default.min.css';`
+  - Titre de la page dans `index.html` changé en **ProjectPilot**.
+  - Code de démo du template nettoyé : `App.css` vidé, `App.tsx` simplifié.
+
+### Commandes (dans `projectpilot/`)
+- `npm run dev` → serveur de dev Vite (avec rechargement à chaud).
+- `npm run build` → vérification TypeScript (`tsc -b`) + build de production.
+- `npm run preview` → sert le build de production.
+- `npm run lint` → lint avec oxlint.
+
+### Structure du projet
+- `index.html` : `<div id="root">` + `<script type="module" src="/src/main.tsx">`.
+- `src/main.tsx` : point d'entrée, `createRoot(...)` + `<StrictMode><App /></StrictMode>`.
+- `src/App.tsx` : composant principal (export par défaut).
+- `src/index.css` : styles globaux (mini.css).
+
+### Concepts à retenir
+- **Plus de globals** : avec un bundler (Vite), on utilise des **modules ES** —
+  `import { createRoot } from 'react-dom/client'`, `import App from './App.tsx'`,
+  `export default App`. Les fichiers JSX en TypeScript ont l'extension **`.tsx`**.
+- Vite compile le JSX/TS lui-même : plus besoin de Babel standalone dans le navigateur.
+- `createRoot` vient maintenant de `react-dom/client` (et non plus de `ReactDOM` global).
+- Le `!` dans `document.getElementById('root')!` est une **assertion TypeScript
+  non-null** (« je garantis que l'élément existe »).
+- **`<StrictMode>`** : mode de développement qui active des vérifications
+  supplémentaires (certains rendus/effets sont exécutés deux fois en dev).
+- **Fragment `<>...</>`** : permet de retourner plusieurs éléments sans `<div>` englobante.
+- On peut importer du CSS directement depuis un fichier TS (`import './index.css'`).
+
+### Code actuel (`projectpilot/src/App.tsx`)
+```tsx
+function App() {
+  return (
+    <>
+      <blockquote cite="Benjamin Franklin">
+        Tell me and I forget, teach me and I may remember, involve me and I learn.
+      </blockquote>
+    </>
+  );
+}
+
+export default App;
+```
+
+### Points à retravailler / questions
+- `projectpilot/` n'est pas encore commité dans git.
+- Le `CLAUDE.md` décrit encore l'ancienne architecture (UMD, `main.js`, `npm start`)
+  et serait à mettre à jour.
+
+---
+
 <!--
 Modèle pour la prochaine entrée (copier en bas du fichier) :
 
